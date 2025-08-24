@@ -63,7 +63,7 @@ multi-account-secure-cloud-platform/
 └─ envs/                        # Environment overlays
    ├─ dev/
    └─ prod/
-
+```
 ---
 ## 🛠️ Get Started
 
