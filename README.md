@@ -65,7 +65,7 @@ multi-account-secure-cloud-platform/
    └─ prod/
 ```
 ---
-## 🛠️ Get Started
+## ✌🏼 Getting Started
 
 ```bash
 git clone https://github.com/Fayez73/multi-account-secure-cloud-platform.git
