@@ -65,3 +65,49 @@ multi-account-secure-cloud-platform/
    └─ prod/
 
 
+## 🛠️ Get Started
+
+```bash
+git clone https://github.com/Fayez73/multi-account-secure-cloud-platform.git
+cd multi-account-secure-cloud-platform
+
+Jenkins Setup & Pipeline
+
+## Jenkins Setup & Pipeline
+
+This project includes **Jenkins pipelines** to automate Terraform deployments with security and compliance checks.
+
+---
+
+### Step 1: Install Jenkins
+- Follow the official guide: [Jenkins Installation](https://www.jenkins.io/doc/book/installing/)  
+- Ensure Jenkins has the **Pipeline plugin** installed  
+
+---
+
+### Step 2: Configure Global Shared Library
+1. Navigate to: **Manage Jenkins → Configure System → Global Pipeline Libraries**  
+2. Add a new library with the following settings:  
+   - **Name:** `shared-library`  
+   - **Default version:** branch or tag (e.g., `main`)  
+   - **Retrieval method:** Modern SCM  
+   - **SCM:** Git → Repository URL of `jenkins/shared-library`  
+
+---
+
+### Step 3: Create a New Pipeline Job
+1. Create a **Pipeline Job** in Jenkins  
+2. Set the **Pipeline Definition** to: `Pipeline script from SCM`  
+3. Configure SCM: Git → repository URL of your repo  
+4. Set **Script Path:** `jenkins/Jenkinsfile`  
+
+---
+
+### Step 4: Environment Variables (Optional)
+- Configure AWS credentials via **Jenkins Credentials**  
+- Reference them in your pipeline like this:
+
+```groovy
+withAWS(role: 'arn:aws:iam::<account-id>:role/terraform', credentials: 'aws-jenkins-creds') {
+    terraformPipeline(env: 'dev')
+}
