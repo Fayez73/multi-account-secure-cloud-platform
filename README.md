@@ -3,7 +3,7 @@
 This project demonstrates how to build a **production-ready, secure, multi-account AWS cloud platform** using **Terraform** and a **Jenkins CI/CD pipeline** with integrated **security scanning** (Checkov & Tfsec). (Dummy data used)  
 
 It is designed to showcas skills in:  
-- Infrastructure as Code (IaC) with **Terraform**  
+- **Terraform**  
 - **Multi-account AWS architecture** (Networking, Security, Compute, Observability)  
 - **Enterprise-grade CI/CD pipelines** with Jenkins Shared Libraries  
 - **Security-first automation** using **Checkov** and **Tfsec**  
@@ -51,65 +51,17 @@ multi-account-secure-cloud-platform/
 ├─ jenkins/
 │  ├─ Jenkinsfile
 │  └─ shared-library/
-│     ├─ vars/
-│     │  ├─ terraformPipeline.groovy
-│     │  ├─ withAwsRole.groovy
-│     │  └─ notify.groovy
-│     └─ src/org/example/aws/
-│        └─ AwsCreds.groovy
 ├─ modules/                     # New top-level folder for reusable modules
 │  ├─ bootstrap-state/           # S3 + DynamoDB TF state
-│  │  ├─ main.tf
-│  │  └─ variables.tf
 │  ├─ org/
-│  │  ├─ main.tf
-│  │  ├─ variables.tf
-│  │  └─ outputs.tf
 │  ├─ scp/
-│  │  ├─ main.tf
-│  │  └─ policies/
-│  │     ├─ deny_root.json
-│  │     ├─ restrict_regions.json
-│  │     └─ mandatory_tags.json
 │  ├─ logging/
-│  │  ├─ main.tf
-│  │  └─ variables.tf
 │  ├─ baseline/
-│  │  ├─ main.tf
-│  │  └─ variables.tf
 │  ├─ network-core/
-│  │  ├─ main.tf
-│  │  └─ variables.tf
 │  ├─ tgw/
-│  │  ├─ main.tf
-│  │  └─ variables.tf
 │  └─ eks/
-│     ├─ main.tf
-│     └─ variables.tf
 └─ envs/                        # Environment overlays
    ├─ dev/
-      ├─ providers.tf
-      ├─ versions.tf
-      ├─ terraform.tfvars
-      ├─ bootstrap_state.tf       
-      ├─ org.tf                   
-      ├─ scp.tf                   
-      ├─ logging.tf               
-      ├─ baseline.tf              
-      ├─ network_core.tf          
-      ├─ tgw.tf                  
-      └─ eks.tf  
    └─ prod/
-      ├─ providers.tf
-      ├─ versions.tf
-      ├─ terraform.tfvars
-      ├─ bootstrap_state.tf       
-      ├─ org.tf                   
-      ├─ scp.tf                  
-      ├─ logging.tf               
-      ├─ baseline.tf              
-      ├─ network_core.tf          
-      ├─ tgw.tf                   
-      └─ eks.tf  
 
 
