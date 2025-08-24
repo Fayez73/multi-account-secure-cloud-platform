@@ -88,14 +88,28 @@ multi-account-secure-cloud-platform/
 │     └─ variables.tf
 └─ envs/                        # Environment overlays
    ├─ dev/
-   │  ├─ main.tf                # Only calls modules
-   │  ├─ versions.tf
-   │  ├─ providers.tf
-   │  └─ terraform.tfvars
-   └─ prod/
-      ├─ main.tf
-      ├─ versions.tf
       ├─ providers.tf
-      └─ terraform.tfvars
+      ├─ versions.tf
+      ├─ terraform.tfvars
+      ├─ bootstrap_state.tf       
+      ├─ org.tf                   
+      ├─ scp.tf                   
+      ├─ logging.tf               
+      ├─ baseline.tf              
+      ├─ network_core.tf          
+      ├─ tgw.tf                  
+      └─ eks.tf  
+   └─ prod/
+      ├─ providers.tf
+      ├─ versions.tf
+      ├─ terraform.tfvars
+      ├─ bootstrap_state.tf       
+      ├─ org.tf                   
+      ├─ scp.tf                  
+      ├─ logging.tf               
+      ├─ baseline.tf              
+      ├─ network_core.tf          
+      ├─ tgw.tf                   
+      └─ eks.tf  
 
 
