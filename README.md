@@ -50,57 +50,52 @@ multi-account-secure-cloud-platform/
 ├─ README.md
 ├─ jenkins/
 │  ├─ Jenkinsfile
-│  └─ shared-library/            # place this into your Jenkins global library repo
+│  └─ shared-library/
 │     ├─ vars/
 │     │  ├─ terraformPipeline.groovy
 │     │  ├─ withAwsRole.groovy
 │     │  └─ notify.groovy
 │     └─ src/org/example/aws/
 │        └─ AwsCreds.groovy
-├─ infra/
-│  ├─ bootstrap-state/           # S3 + DynamoDB for TF state
+├─ modules/                     # New top-level folder for reusable modules
+│  ├─ bootstrap-state/           # S3 + DynamoDB TF state
 │  │  ├─ main.tf
 │  │  └─ variables.tf
-│  ├─ global/                    # org-wide resources (run from mgmt account)
-│  │  ├─ org/
-│  │  │  ├─ main.tf
-│  │  │  ├─ variables.tf
-│  │  │  └── outputs.tf
-│  │  ├─ scp/
-│  │  │  ├─ main.tf
-│  │  │  └─ policies/
-│  │  │     ├─ deny_root.json
-│  │  │     ├─ restrict_regions.json
-│  │  │     └─ mandatory_tags.json
-│  │  └─ logging/
-│  │     ├─ main.tf
-│  │     └─ variables.tf
-│  ├─ accounts/
-│  │  ├─ baseline/               # guardrails per account
-│  │  │  ├─ main.tf
-│  │  │  └─ variables.tf
-│  │  └─ providers.tf
-│  ├─ network/
-│  │  ├─ core/                   # per-account VPCs
-│  │  │  ├─ main.tf
-│  │  │  └─ variables.tf
-│  │  └─ tgw/                    # centralized Transit Gateway + attachments
-│  │     ├─ main.tf
-│  │     └─ variables.tf
-│  ├─ platforms/
-│  │  └─ eks/                    # optional but common
-│  │     ├─ main.tf
-│  │     └─ variables.tf
-│  └─ envs/                      # overlays selecting modules + vars per env
-│     ├─ dev/
-│     │  ├─ main.tf
-│     │  ├─ versions.tf
-│     │  ├─ providers.tf
-│     │  └─ terraform.tfvars
-│     └─ prod/
-│        ├─ main.tf
-│        ├─ versions.tf
-│        ├─ providers.tf
-│        └─ terraform.tfvars
-└─ .terraform-version            # if you use tfenv
+│  ├─ org/
+│  │  ├─ main.tf
+│  │  ├─ variables.tf
+│  │  └─ outputs.tf
+│  ├─ scp/
+│  │  ├─ main.tf
+│  │  └─ policies/
+│  │     ├─ deny_root.json
+│  │     ├─ restrict_regions.json
+│  │     └─ mandatory_tags.json
+│  ├─ logging/
+│  │  ├─ main.tf
+│  │  └─ variables.tf
+│  ├─ baseline/
+│  │  ├─ main.tf
+│  │  └─ variables.tf
+│  ├─ network-core/
+│  │  ├─ main.tf
+│  │  └─ variables.tf
+│  ├─ tgw/
+│  │  ├─ main.tf
+│  │  └─ variables.tf
+│  └─ eks/
+│     ├─ main.tf
+│     └─ variables.tf
+└─ envs/                        # Environment overlays
+   ├─ dev/
+   │  ├─ main.tf                # Only calls modules
+   │  ├─ versions.tf
+   │  ├─ providers.tf
+   │  └─ terraform.tfvars
+   └─ prod/
+      ├─ main.tf
+      ├─ versions.tf
+      ├─ providers.tf
+      └─ terraform.tfvars
+
 
