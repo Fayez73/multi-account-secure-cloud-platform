@@ -2,7 +2,7 @@
 
 This project demonstrates how to build a **production-ready, secure, multi-account AWS cloud platform** using **Terraform** and a **Jenkins CI/CD pipeline** with integrated **security scanning** (Checkov & Tfsec).  
 
-It is designed as a **flagship DevOps → Solutions Architect portfolio project**, showcasing skills in:  
+It is designed to showcase skills in:  
 - Infrastructure as Code (IaC) with **Terraform**  
 - **Multi-account AWS architecture** (Networking, Security, Compute, Observability)  
 - **Enterprise-grade CI/CD pipelines** with Jenkins Shared Libraries  
