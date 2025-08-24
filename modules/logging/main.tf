@@ -11,3 +11,4 @@ resource "aws_s3_bucket" "org_logs" {
     ManagedBy   = "Terraform"
   }
 }
+
