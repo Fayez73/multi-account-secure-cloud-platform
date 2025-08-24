@@ -1,80 +1,44 @@
-@Library('cloud-shared-lib') _
+@Library('multi-account-lib') _   // Jenkins Shared Library
 
 pipeline {
-    agent any
+  agent any
 
-    environment {
-        AWS_DEFAULT_REGION = "eu-west-2"
-        TF_WORKDIR = "infra"
+  environment {
+    AWS_REGION     = "eu-west-2"
+    AWS_ROLE_ARN   = credentials('aws-org-admin-role')  // Jenkins credentials store
+    SLACK_CHANNEL  = '#cloud-platform-pipeline'
+  }
+
+  options {
+    ansiColor('xterm')
+    timestamps()
+    disableConcurrentBuilds()
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
     }
 
-    options {
-        timestamps()
-        ansiColor('xterm')
-        buildDiscarder(logRotator(numToKeepStr: '10'))
+    stage('Terraform') {
+      steps {
+        terraformPipeline {
+          envName    = "${params.ENV ?: 'dev'}"
+          awsRegion  = "${env.AWS_REGION}"
+          awsRoleArn = "${env.AWS_ROLE_ARN}"
+        }
+      }
     }
+  }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Terraform Init') {
-            steps {
-                terraformInit("${TF_WORKDIR}")
-            }
-        }
-
-        stage('Validate & Format') {
-            steps {
-                terraformValidate("${TF_WORKDIR}")
-                terraformFmt("${TF_WORKDIR}")
-            }
-        }
-
-        stage('Security Scans') {
-            parallel {
-                stage('Tfsec Scan') {
-                    steps {
-                        tfsecScan("${TF_WORKDIR}")
-                    }
-                }
-                stage('Checkov Scan') {
-                    steps {
-                        checkovScan("${TF_WORKDIR}")
-                    }
-                }
-            }
-        }
-
-        stage('Terraform Plan') {
-            steps {
-                terraformPlan("${TF_WORKDIR}")
-                archiveArtifacts artifacts: "${TF_WORKDIR}/plan.out", fingerprint: true
-            }
-        }
-
-        stage('Approval') {
-            steps {
-                input message: "Approve to apply Terraform changes?", ok: "Deploy"
-            }
-        }
-
-        stage('Terraform Apply') {
-            steps {
-                terraformApply("${TF_WORKDIR}")
-            }
-        }
+  post {
+    success {
+      notify buildStatus: "SUCCESS", channel: "${env.SLACK_CHANNEL}"
     }
-
-    post {
-        success {
-            notifySlack("SUCCESS ✅ - ${env.JOB_NAME} #${env.BUILD_NUMBER}")
-        }
-        failure {
-            notifySlack("FAILURE ❌ - ${env.JOB_NAME} #${env.BUILD_NUMBER}")
-        }
+    failure {
+      notify buildStatus: "FAILURE", channel: "${env.SLACK_CHANNEL}"
     }
+  }
 }

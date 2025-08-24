@@ -2,7 +2,7 @@
 
 This project demonstrates how to build a **production-ready, secure, multi-account AWS cloud platform** using **Terraform** and a **Jenkins CI/CD pipeline** with integrated **security scanning** (Checkov & Tfsec).  
 
-It is designed to showcase skills in:  
+It is designed to showcas skills in:  
 - Infrastructure as Code (IaC) with **Terraform**  
 - **Multi-account AWS architecture** (Networking, Security, Compute, Observability)  
 - **Enterprise-grade CI/CD pipelines** with Jenkins Shared Libraries  
@@ -46,25 +46,61 @@ It is designed to showcase skills in:
 
 ## 📂 Project Structure
 ```bash
-multi-account-secure-cloud/
-├── Jenkinsfile
-├── shared-libraries/         # Jenkins shared libraries
-│   └── vars/
-│       ├── terraform.groovy
-│       └── notifySlack.groovy
-├── infra/
-│   ├── backend.hcl           # Remote state backend config
-│   ├── main.tf               # Root Terraform
-│   ├── variables.tf
-│   ├── outputs.tf
-│   ├── accounts/
-│   │   ├── networking.tf
-│   │   ├── security.tf
-│   │   ├── compute.tf
-│   │   └── monitoring.tf
-│   └── modules/
-│       ├── vpc/
-│       ├── eks/
-│       ├── transit-gateway/
-│       └── cloudtrail/
-└── README.md
+multi-account-secure-cloud-platform/
+├─ README.md
+├─ jenkins/
+│  ├─ Jenkinsfile
+│  └─ shared-library/            # place this into your Jenkins global library repo
+│     ├─ vars/
+│     │  ├─ terraformPipeline.groovy
+│     │  ├─ withAwsRole.groovy
+│     │  └─ notify.groovy
+│     └─ src/org/example/aws/
+│        └─ AwsCreds.groovy
+├─ infra/
+│  ├─ bootstrap-state/           # S3 + DynamoDB for TF state
+│  │  ├─ main.tf
+│  │  └─ variables.tf
+│  ├─ global/                    # org-wide resources (run from mgmt account)
+│  │  ├─ org/
+│  │  │  ├─ main.tf
+│  │  │  ├─ variables.tf
+│  │  │  └── outputs.tf
+│  │  ├─ scp/
+│  │  │  ├─ main.tf
+│  │  │  └─ policies/
+│  │  │     ├─ deny_root.json
+│  │  │     ├─ restrict_regions.json
+│  │  │     └─ mandatory_tags.json
+│  │  └─ logging/
+│  │     ├─ main.tf
+│  │     └─ variables.tf
+│  ├─ accounts/
+│  │  ├─ baseline/               # guardrails per account
+│  │  │  ├─ main.tf
+│  │  │  └─ variables.tf
+│  │  └─ providers.tf
+│  ├─ network/
+│  │  ├─ core/                   # per-account VPCs
+│  │  │  ├─ main.tf
+│  │  │  └─ variables.tf
+│  │  └─ tgw/                    # centralized Transit Gateway + attachments
+│  │     ├─ main.tf
+│  │     └─ variables.tf
+│  ├─ platforms/
+│  │  └─ eks/                    # optional but common
+│  │     ├─ main.tf
+│  │     └─ variables.tf
+│  └─ envs/                      # overlays selecting modules + vars per env
+│     ├─ dev/
+│     │  ├─ main.tf
+│     │  ├─ versions.tf
+│     │  ├─ providers.tf
+│     │  └─ terraform.tfvars
+│     └─ prod/
+│        ├─ main.tf
+│        ├─ versions.tf
+│        ├─ providers.tf
+│        └─ terraform.tfvars
+└─ .terraform-version            # if you use tfenv
+
